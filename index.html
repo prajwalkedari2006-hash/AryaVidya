@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AryaVidya — Ancient Indian Knowledge System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0c1a; --bg-card: #0f1126; --bg-deep: #080a16; --bg-input: #070913;
+    --saffron: #f47400; --gold: #ffc700; --border: #3a2e1a;
+    --text: #f5d990; --text-muted: #7a6640; --text-dim: #b89050;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Crimson Text', Georgia, serif; font-size: 17px; min-height: 100vh; display: flex; flex-direction: column; }
+  .top-bar { height: 2px; background: linear-gradient(to right, transparent, var(--gold) 30%, var(--saffron) 50%, var(--gold) 70%, transparent); }
+  header { position: sticky; top: 0; z-index: 100; background: rgba(8,10,22,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(58,46,26,0.7); }
+  .header-inner { max-width: 960px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-om { font-size: 30px; line-height: 1; filter: drop-shadow(0 0 10px rgba(244,116,0,0.7)); }
+  .brand-name { font-family: 'Cinzel Decorative', serif; font-size: 20px; font-weight: 700; background: linear-gradient(135deg, #ffd700 0%, #ffa500 40%, #ffd700 70%, #ffc300 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+  .brand-sub { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.22em; color: #c87030; text-transform: uppercase; margin-top: 3px; }
+  nav { display: flex; gap: 4px; }
+  .nav-btn { font-family: 'Cinzel', serif; font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 999px; border: none; cursor: pointer; transition: all 0.2s; color: #c09050; background: transparent; }
+  .nav-btn:hover { color: var(--text); background: rgba(244,116,0,0.12); }
+  .nav-btn.active { background: linear-gradient(135deg, #f47400 0%, #c85800 100%); color: #060810; box-shadow: 0 0 18px rgba(244,116,0,0.5); }
+  .header-rule { height: 1px; background: linear-gradient(to right, transparent, rgba(255,199,0,0.4), rgba(244,116,0,0.6), rgba(255,199,0,0.4), transparent); }
+  .section-banner { background: linear-gradient(180deg, #0d0f22 0%, #090b18 100%); border-bottom: 1px solid rgba(58,46,26,0.5); }
+  .section-banner-inner { max-width: 960px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; gap: 16px; }
+  .banner-icon { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; background: radial-gradient(circle, rgba(244,116,0,0.22) 0%, rgba(244,116,0,0.04) 100%); border: 1.5px solid rgba(244,116,0,0.45); box-shadow: 0 0 20px rgba(244,116,0,0.22); }
+  .banner-title { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 600; color: #f0d080; }
+  .banner-desc { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+  .banner-dots { margin-left: auto; display: flex; gap: 8px; opacity: 0.4; }
+  .banner-dot { width: 8px; height: 8px; border-radius: 50%; }
+  main { flex: 1; max-width: 960px; margin: 0 auto; width: 100%; padding: 24px; }
+  .page { display: none; }
+  .page.active { display: block; }
+  .tab-bar { display: grid; padding: 5px; border-radius: 13px; margin-bottom: 18px; background: #0d0f22; border: 1px solid var(--border); }
+  .tab-bar.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .tab-bar.cols-5 { grid-template-columns: repeat(5, 1fr); }
+  .tab-btn { font-family: 'Cinzel', serif; font-size: 12px; font-weight: 600; padding: 9px 6px; border-radius: 8px; border: none; cursor: pointer; background: transparent; color: #907040; transition: all 0.2s; text-align: center; }
+  .tab-btn:hover { color: var(--text-dim); background: rgba(244,116,0,0.08); }
+  .tab-btn.active { background: linear-gradient(135deg, #f47400 0%, #c85800 100%); color: #060810; box-shadow: 0 0 12px rgba(244,116,0,0.4); }
+  .card { background: #0f1126; border: 1px solid var(--border); border-radius: 18px; padding: 22px; box-shadow: 0 0 0 1px rgba(58,46,26,0.6), 0 4px 24px rgba(244,116,0,0.08); transition: box-shadow 0.3s; }
+  .card:hover { box-shadow: 0 0 0 1px rgba(244,116,0,0.25), 0 4px 32px rgba(244,116,0,0.14); }
+  .card-title { font-family: 'Cinzel', serif; font-size: 18px; background: linear-gradient(135deg, #ffd700 0%, #ffa500 40%, #ffd700 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
+  .card-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.5; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .form-grid { display: grid; gap: 12px; margin-bottom: 16px; }
+  .form-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-label { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase; color: #c09050; }
+  .form-input { background: var(--bg-input); border: 1px solid var(--border); color: var(--text); border-radius: 9px; padding: 10px 14px; font-size: 16px; font-family: 'Crimson Text', serif; outline: none; transition: border-color 0.2s; }
+  .form-input:focus { border-color: rgba(244,116,0,0.55); box-shadow: 0 0 0 2px rgba(244,116,0,0.15); }
+  .lon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .lon-box { padding: 14px; border-radius: 12px; background: var(--bg-deep); }
+  .lon-box.moon { border: 1px solid rgba(106,47,173,0.4); }
+  .lon-box.sun  { border: 1px solid rgba(255,199,0,0.28); }
+  .lon-header { font-family: 'Cinzel', serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 10px; }
+  .lon-box.moon .lon-header { color: #9b72e0; }
+  .lon-box.sun  .lon-header { color: #e8c040; }
+  .lon-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .btn { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700; padding: 10px 24px; border-radius: 999px; border: none; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #f47400 0%, #c85800 100%); color: #060810; box-shadow: 0 0 16px rgba(244,116,0,0.35); }
+  .btn:hover { box-shadow: 0 0 24px rgba(244,116,0,0.55); transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .gold-rule { height: 2px; border: none; margin: 18px 0; background: linear-gradient(to right, transparent, rgba(255,199,0,0.6), rgba(244,116,0,0.8), rgba(255,199,0,0.6), transparent); }
+  .result { animation: fadeUp 0.35s ease; }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+  .bits { display: flex; flex-wrap: wrap; gap: 7px; }
+  .bit { width: 40px; height: 40px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-family: Menlo, monospace; font-size: 15px; font-weight: 700; transition: transform 0.15s; }
+  .bit:hover { transform: scale(1.12); }
+  .bit.one { background: linear-gradient(135deg, #f47400 0%, #ffb020 100%); color: #060810; box-shadow: 0 0 12px rgba(244,116,0,0.5); }
+  .bit.zero { background: #141728; border: 1px solid var(--border); color: #907050; }
+  .result-box { background: var(--bg-deep); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+  .result-box-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .decimal-result { border-radius: 14px; padding: 20px; text-align: center; background: radial-gradient(ellipse at 50% 0%, rgba(244,116,0,0.15) 0%, #0c0e20 70%); border: 1px solid rgba(244,116,0,0.30); margin-bottom: 10px; }
+  .decimal-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .decimal-value { font-family: 'Cinzel Decorative', serif; font-size: 52px; font-weight: 700; background: linear-gradient(135deg, #ffd700 0%, #ffa500 45%, #ffd700 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+  .cal-results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cal-card { padding: 16px; border-radius: 16px; transition: box-shadow 0.2s; }
+  .cal-card-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 6px; }
+  .cal-card-num { font-family: 'Cinzel Decorative', serif; font-size: 38px; font-weight: 700; line-height: 1; }
+  .cal-card-name { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .cal-card-elapsed { color: #6a5530; font-size: 12px; margin-bottom: 3px; }
+  .cal-card-sub { font-size: 12px; color: #7a6640; }
+  .cal-tithi { background: radial-gradient(ellipse at 0% 0%, rgba(244,116,0,0.12) 0%, #0c0e20 70%); border: 1px solid rgba(244,116,0,0.30); }
+  .cal-tithi .cal-card-label { color: rgba(244,116,0,0.85); }
+  .cal-tithi .cal-card-num, .cal-tithi .cal-card-name { background: linear-gradient(135deg, #f47400 0%, #ffc700 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .cal-karana { background: radial-gradient(ellipse at 0% 0%, rgba(224,62,62,0.12) 0%, #0c0e20 70%); border: 1px solid rgba(224,62,62,0.28); }
+  .cal-karana .cal-card-label { color: rgba(224,80,80,0.90); }
+  .cal-karana .cal-card-num, .cal-karana .cal-card-name { background: linear-gradient(135deg, #e03e3e 0%, #ffc700 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .cal-naksatra { background: radial-gradient(ellipse at 0% 0%, rgba(155,93,229,0.12) 0%, #0c0e20 70%); border: 1px solid rgba(155,93,229,0.28); }
+  .cal-naksatra .cal-card-label { color: rgba(165,110,235,0.90); }
+  .cal-naksatra .cal-card-num, .cal-naksatra .cal-card-name { background: linear-gradient(135deg, #9b5de5 0%, #ffc700 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .cal-yoga { background: radial-gradient(ellipse at 0% 0%, rgba(0,180,216,0.12) 0%, #0c0e20 70%); border: 1px solid rgba(0,180,216,0.28); }
+  .cal-yoga .cal-card-label { color: rgba(0,180,216,0.90); }
+  .cal-yoga .cal-card-num, .cal-yoga .cal-card-name { background: linear-gradient(135deg, #00b4d8 0%, #ffc700 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .info-box { display: flex; align-items: flex-start; gap: 14px; background: linear-gradient(135deg, #0d0f22 0%, #101328 100%); border: 1px solid rgba(255,199,0,0.18); border-radius: 18px; padding: 18px; margin-top: 18px; }
+  .info-icon { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; background: rgba(255,199,0,0.12); border: 1px solid rgba(255,199,0,0.30); }
+  .info-title { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 600; color: var(--gold); margin-bottom: 4px; }
+  .info-text { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+  .info-text em { color: var(--text-dim); font-style: normal; }
+  .about-hero { border-radius: 20px; padding: 32px; text-align: center; background: radial-gradient(ellipse at 50% 0%, rgba(244,116,0,0.12) 0%, #0c0e20 70%); border: 1px solid rgba(58,46,26,0.5); margin-bottom: 20px; }
+  .about-hero-om { font-size: 50px; margin-bottom: 12px; filter: drop-shadow(0 0 16px rgba(244,116,0,0.6)); }
+  .about-hero-title { font-family: 'Cinzel Decorative', serif; font-size: 26px; font-weight: 700; background: linear-gradient(135deg, #ffd700 0%, #ffa500 40%, #ffd700 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 12px; }
+  .about-hero-desc { font-size: 15px; color: var(--text-muted); line-height: 1.7; max-width: 640px; margin: 0 auto; }
+  .about-section { display: flex; gap: 16px; border-radius: 18px; padding: 20px; margin-bottom: 12px; }
+  .about-icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .about-title { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .about-text { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+  .timeline { background: #0f1126; border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-top: 18px; }
+  .timeline-title { font-family: 'Cinzel', serif; font-size: 14px; font-weight: 600; text-align: center; background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 18px; }
+  .tl-row { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 12px; }
+  .tl-year { font-family: 'Cinzel', serif; font-size: 11px; font-weight: 600; width: 72px; flex-shrink: 0; text-align: right; padding-top: 2px; }
+  .tl-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+  .tl-text { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+  footer { background: #060810; text-align: center; padding: 18px 24px; }
+  .footer-name { font-family: 'Cinzel Decorative', serif; font-size: 14px; background: linear-gradient(135deg, #ffd700 0%, #ffa500 50%, #ffd700 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 4px; }
+  .footer-sub { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.20em; text-transform: uppercase; color: #5a4428; }
+  .error { color: #e06060; font-size: 13px; margin-top: 4px; }
+  @media (max-width: 620px) {
+    .tab-bar.cols-5 { grid-template-columns: repeat(3, 1fr); }
+    .lon-grid, .cal-results-grid, .form-grid.cols-2 { grid-template-columns: 1fr; }
+    nav { gap: 2px; }
+    .nav-btn { padding: 6px 10px; font-size: 11px; }
+    .about-section { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="top-bar"></div>
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-om">ॐ</div>
+      <div>
+        <div class="brand-name">AryaVidya</div>
+        <div class="brand-sub">Ancient Indian Knowledge System</div>
+      </div>
+    </div>
+    <nav>
+      <button class="nav-btn active" id="nav-binary" onclick="showPage('binary')">∞ Binary</button>
+      <button class="nav-btn" id="nav-calendar" onclick="showPage('calendar')">☽ Calendar</button>
+      <button class="nav-btn" id="nav-about" onclick="showPage('about')">✦ About</button>
+    </nav>
+  </div>
+  <div class="header-rule"></div>
+</header>
+
+<div class="section-banner">
+  <div class="section-banner-inner">
+    <div class="banner-icon" id="banner-icon">📿</div>
+    <div>
+      <div class="banner-title" id="banner-title">Chandahshastra — Binary System</div>
+      <div class="banner-desc" id="banner-desc">Pingala's ancient binary encoding from ~300 BCE India</div>
+    </div>
+    <div class="banner-dots">
+      <div class="banner-dot" style="background:#f47400"></div>
+      <div class="banner-dot" style="background:#ffc700"></div>
+      <div class="banner-dot" style="background:#e03e3e"></div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<!-- BINARY PAGE -->
+<div class="page active" id="page-binary">
+  <div class="tab-bar cols-3" id="binary-tabs">
+    <button class="tab-btn active" onclick="switchBinaryTab('nasta',this)">Nasta</button>
+    <button class="tab-btn" onclick="switchBinaryTab('uddhista',this)">Uddhista</button>
+    <button class="tab-btn" onclick="switchBinaryTab('deci',this)">Binary → Decimal</button>
+  </div>
+  <div class="tab-panel active" id="binary-nasta">
+    <div class="card">
+      <div class="card-title">Nasta Method</div>
+      <div class="card-desc">Convert a number to its Pingala binary sequence — the ancient encoding from Sanskrit prosody.</div>
+      <div class="form-grid cols-2">
+        <div class="form-group"><label class="form-label">Number</label><input class="form-input" type="number" id="nasta-num" value="10" min="1" /></div>
+        <div class="form-group"><label class="form-label">Array Length</label><input class="form-input" type="number" id="nasta-len" value="8" min="1" max="30" /></div>
+      </div>
+      <div id="nasta-error" class="error" style="display:none"></div>
+      <button class="btn" onclick="computeNasta()">Compute →</button>
+      <div id="nasta-result"></div>
+    </div>
+  </div>
+  <div class="tab-panel" id="binary-uddhista">
+    <div class="card">
+      <div class="card-title">Uddhista Method</div>
+      <div class="card-desc">Recover the original decimal from a Pingala binary sequence. Enter bits separated by spaces (e.g. 1 0 1 1).</div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Binary Sequence</label><input class="form-input" type="text" id="uddhista-seq" value="1 0 1 1" placeholder="e.g. 1 0 1 1 0" style="font-family:Menlo,monospace" /></div>
+      </div>
+      <div id="uddhista-error" class="error" style="display:none"></div>
+      <button class="btn" onclick="computeUddhista()">Compute →</button>
+      <div id="uddhista-result"></div>
+    </div>
+  </div>
+  <div class="tab-panel" id="binary-deci">
+    <div class="card">
+      <div class="card-title">Binary to Decimal</div>
+      <div class="card-desc">Convert a standard binary sequence to decimal. Enter bits separated by spaces or commas.</div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Binary Sequence</label><input class="form-input" type="text" id="deci-seq" value="1 0 1 0" placeholder="e.g. 1 0 1 0" style="font-family:Menlo,monospace" /></div>
+      </div>
+      <div id="deci-error" class="error" style="display:none"></div>
+      <button class="btn" onclick="computeDeci()">Compute →</button>
+      <div id="deci-result"></div>
+    </div>
+  </div>
+  <div class="info-box">
+    <div class="info-icon">📜</div>
+    <div>
+      <div class="info-title">Pingala's Chandahshastra (~300 BCE)</div>
+      <div class="info-text">Introduced the binary number system in Sanskrit prosody. The <em>Nasta</em> (finding) and <em>Uddhista</em> (recovering) methods are inverse operations — predating Leibniz by nearly 2,000 years.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CALENDAR PAGE -->
+<div class="page" id="page-calendar">
+  <div class="tab-bar cols-5" id="calendar-tabs">
+    <button class="tab-btn active" onclick="switchCalTab('all',this)">All</button>
+    <button class="tab-btn" onclick="switchCalTab('tithi',this)">Tithi</button>
+    <button class="tab-btn" onclick="switchCalTab('karana',this)">Karana</button>
+    <button class="tab-btn" onclick="switchCalTab('naksatra',this)">Naksatra</button>
+    <button class="tab-btn" onclick="switchCalTab('yoga',this)">Yoga</button>
+  </div>
+  <div class="tab-panel active" id="calendar-all">
+    <div class="card">
+      <div class="card-title">Calculate All</div>
+      <div class="card-desc">Compute Tithi, Karana, Naksatra and Yoga simultaneously.</div>
+      <div class="lon-grid">
+        <div class="lon-box moon"><div class="lon-header">☽ Moon Longitude</div><div class="lon-inner"><div class="form-group"><label class="form-label">Degrees</label><input class="form-input" type="number" id="all-moon-deg" value="45"/></div><div class="form-group"><label class="form-label">Minutes</label><input class="form-input" type="number" id="all-moon-min" value="30"/></div></div></div>
+        <div class="lon-box sun"><div class="lon-header">☀ Sun Longitude</div><div class="lon-inner"><div class="form-group"><label class="form-label">Degrees</label><input class="form-input" type="number" id="all-sun-deg" value="20"/></div><div class="form-group"><label class="form-label">Minutes</label><input class="form-input" type="number" id="all-sun-min" value="15"/></div></div></div>
+      </div>
+      <button class="btn" onclick="computeAll()">Calculate All →</button>
+      <div id="all-result"></div>
+    </div>
+  </div>
+  <div class="tab-panel" id="calendar-tithi">
+    <div class="card">
+      <div class="card-title">Tithi</div>
+      <div class="card-desc">A lunar day — 1/30th of a lunar month, from the Moon-Sun angular difference.</div>
+      <div class="lon-grid">
+        <div class="lon-box moon"><div class="lon-header">☽ Moon Longitude</div><div class="lon-inner"><div class="form-group"><label class="form-label">Degrees</label><input class="form-input" type="number" id="tithi-moon-deg" value="45"/></div><div class="form-group"><label class="form-label">Minutes</label><input class="form-input" type="number" id="tithi-moon-min" value="30"/></div></div></div>
+        <div class="lon-box sun"><div class="lon-header">☀ Sun Longitude</div><div class="lon-inner"><div class="form-group"><label class="form-label">Degrees</label><input class="form-input" type="number" id="tithi-sun-deg" value="20"/></div><div class="form-group"><label class="form-label">Minutes</label><input class="form-input" type="number" id="tithi-sun-min" value="15"/></div></div></div>
+      </div>
+      <button class="btn" onclick="computeSingle('tithi')">Compute Tithi →</button>
+      <div id="tithi-result"></div>
+    </div>
+  </div>
+  <div class="tab-panel" id="calendar-karana">
+    <div class="card">
+      <div class="card-title">Karana</div>
+      <div class="card-desc">Half a tithi — 1/60th of a lunar month, spanning 6° of Moon-Sun elongation.</div>
+      <div class="lon-grid">
+        <div class="lon-box moon"><div class="lon-header">☽ Moon Longitude</div><div class="lon-inner"><div class="form-group"><label class="form-label">Degrees</label><input class="form-input" type="number" id="karana-moon-deg" value="45"/></div><div class="form-group"><label class="form-label">Minutes</label><input class="form-input" type="number" id="karana-moon-min" value="30"/></div></div></div>
+        <div class="lon-box sun"><div class="lon-header">☀ Sun Longitude</div><div class="lon-inner"><div class="form-group"><label class="form-label">Degrees</label><input class="form-input" type="number" id="karana-sun-deg" value="20"/></div><div class="form-group"><label class="form-label">Minutes</label><input class="form-input" type="number" id="karana-sun-min" value="15"/></div></div></div>
+      </div>
+      <button class="btn" onclick="computeSingle('karana')">Compute Karana →</button>
+      <div id="karana-result"></div>
+    </div>
+  </div>
+  <div class="tab-panel" id="calendar-naksatra">
+    <div class="card">
+      <div class="card-title">Naksatra</div>
+      <div class="card-desc">The 27 lunar mansions, each spanning 800 arc-minutes of Moon longitude.</div>
+      <div class="lon-grid">
+        <div class="lon-box moon"><div class="lon-header">☽ Moon Longitude</div><div class="lon-inner"><div class="form-group"><label class="form-label">Degrees</label><input class="form-input" type="number" id="naksatra-moon-deg" value="45"/></div><div class="form-group"><label class="form-label">Minutes</label><input class="form-input" type="number" id="naksatra-moon-min" value="30"/></div></div></div>
+        <div class="lon-box sun"><div class="lon-header">☀ Sun Longitude</div><div class="lon-inner"><div class="form-group"><label class="form-label">Degrees</label><input class="form-input" type="number" id="naksatra-sun-deg" value="20"/></div><div class="form-group"><label class="form-label">Minutes</label><input class="form-input" type="number" id="naksatra-sun-min" value="15"/></div></div></div>
+      </div>
+      <button class="btn" onclick="computeSingle('naksatra')">Compute Naksatra →</button>
+      <div id="naksatra-result"></div>
+    </div>
+  </div>
+  <div class="tab-panel" id="calendar-yoga">
+    <div class="card">
+      <div class="card-title">Yoga</div>
+      <div class="card-desc">27 yogas from the sum of Moon and Sun longitudes, each spanning 800 arc-minutes.</div>
+      <div class="lon-grid">
+        <div class="lon-box moon"><div class="lon-header">☽ Moon Longitude</div><div class="lon-inner"><div class="form-group"><label class="form-label">Degrees</label><input class="form-input" type="number" id="yoga-moon-deg" value="45"/></div><div class="form-group"><label class="form-label">Minutes</label><input class="form-input" type="number" id="yoga-moon-min" value="30"/></div></div></div>
+        <div class="lon-box sun"><div class="lon-header">☀ Sun Longitude</div><div class="lon-inner"><div class="form-group"><label class="form-label">Degrees</label><input class="form-input" type="number" id="yoga-sun-deg" value="20"/></div><div class="form-group"><label class="form-label">Minutes</label><input class="form-input" type="number" id="yoga-sun-min" value="15"/></div></div></div>
+      </div>
+      <button class="btn" onclick="computeSingle('yoga')">Compute Yoga →</button>
+      <div id="yoga-result"></div>
+    </div>
+  </div>
+  <div class="info-box">
+    <div class="info-icon" style="background:rgba(106,47,173,0.15);border-color:rgba(106,47,173,0.35)">🌙</div>
+    <div>
+      <div class="info-title">Panchanga — Five Limbs of Time</div>
+      <div class="info-text"><em>Tithi, Vara, Naksatra, Yoga,</em> and <em>Karana</em> define every moment in Vedic timekeeping, still used today for auspicious timing.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <div class="about-hero-om">ॐ</div>
+    <div class="about-hero-title">Ancient Indian Knowledge System</div>
+    <p class="about-hero-desc">India's scholars developed sophisticated systems of mathematics, astronomy, and timekeeping millennia ahead of their time. AryaVidya preserves two: Pingala's binary arithmetic and the Vedic Panchanga calendar.</p>
+  </div>
+
+  <div class="about-section" style="background:radial-gradient(ellipse at 0% 0%,rgba(244,116,0,0.10) 0%,#0c0e20 70%);border:1px solid rgba(244,116,0,0.22)">
+    <div class="about-icon" style="background:rgba(244,116,0,0.15);border:1.5px solid rgba(244,116,0,0.35)">📿</div>
+    <div><div class="about-title" style="color:#f47400">Chandahshastra — The Binary System</div>
+    <div class="about-text">Pingala (~300 BCE) described the binary number system in his Sanskrit prosody treatise using <em style="color:var(--text-dim)">laghu</em> (light, 0) and <em style="color:var(--text-dim)">guru</em> (heavy, 1) syllables to encode verse patterns. His Nasta and Uddhista algorithms are precise inverse operations, predating Leibniz by nearly 2,000 years.</div></div>
+  </div>
+
+  <div class="about-section" style="background:radial-gradient(ellipse at 0% 0%,rgba(155,93,229,0.10) 0%,#0c0e20 70%);border:1px solid rgba(155,93,229,0.22)">
+    <div class="about-icon" style="background:rgba(155,93,229,0.15);border:1.5px solid rgba(155,93,229,0.35)">🌙</div>
+    <div><div class="about-title" style="color:#9b5de5">Panchanga — The Five Limbs of Time</div>
+    <div class="about-text">The ancient Hindu almanac. Its five elements — <em style="color:var(--text-dim)">Tithi, Vara, Naksatra, Yoga,</em> and <em style="color:var(--text-dim)">Karana</em> — precisely define every moment in Vedic timekeeping. Still consulted daily across India for ceremonies, marriages, travel, and planting.</div></div>
+  </div>
+
+  <div class="about-section" style="background:radial-gradient(ellipse at 0% 0%,rgba(244,116,0,0.08) 0%,#0c0e20 70%);border:1px solid rgba(244,116,0,0.18)">
+    <div class="about-icon" style="background:rgba(244,116,0,0.12);border:1.5px solid rgba(244,116,0,0.28)">☽</div>
+    <div><div class="about-title" style="color:#ff8c00">Tithi — The Lunar Day</div>
+    <div class="about-text">A Tithi is 1/30th of a lunar month — the time for the Moon to gain 12° on the Sun. There are 30 Tithis: 15 in the bright fortnight (Shukla Paksha) ending with Purnima, and 15 in the dark fortnight (Krishna Paksha) ending with Amavasya. Each lasts ~23.6 hours.</div></div>
+  </div>
+
+  <div class="about-section" style="background:radial-gradient(ellipse at 0% 0%,rgba(224,62,62,0.08) 0%,#0c0e20 70%);border:1px solid rgba(224,62,62,0.18)">
+    <div class="about-icon" style="background:rgba(224,62,62,0.12);border:1.5px solid rgba(224,62,62,0.28)">✦</div>
+    <div><div class="about-title" style="color:#e03e3e">Karana — Half a Lunar Day</div>
+    <div class="about-text">A Karana is half a Tithi (6° of Moon-Sun elongation). There are 11 Karanas: 4 fixed (Kimstughna, Shakuni, Chatushpada, Naga) and 7 repeating (Bava, Balava, Kaulava, Taitila, Gara, Vanija, Vishti) cycling 8 times through the month.</div></div>
+  </div>
+
+  <div class="about-section" style="background:radial-gradient(ellipse at 0% 0%,rgba(155,93,229,0.08) 0%,#0c0e20 70%);border:1px solid rgba(155,93,229,0.18)">
+    <div class="about-icon" style="background:rgba(155,93,229,0.12);border:1.5px solid rgba(155,93,229,0.28)">⭐</div>
+    <div><div class="about-title" style="color:#9b5de5">Naksatra — The 27 Lunar Mansions</div>
+    <div class="about-text">The 27 Naksatras are star clusters through which the Moon passes, each spanning 800 arc-minutes (13°20') from Ashwini to Revati. Used in Jyotisha for birth charts, muhurta, and compatibility readings based on the Moon's ~27.3-day sidereal period.</div></div>
+  </div>
+
+  <div class="about-section" style="background:radial-gradient(ellipse at 0% 0%,rgba(0,180,216,0.08) 0%,#0c0e20 70%);border:1px solid rgba(0,180,216,0.18)">
+    <div class="about-icon" style="background:rgba(0,180,216,0.12);border:1.5px solid rgba(0,180,216,0.28)">🕉</div>
+    <div><div class="about-title" style="color:#00b4d8">Yoga — Combined Lunar-Solar Interval</div>
+    <div class="about-text">A Yoga is found by adding Moon and Sun longitudes, divided into 27 equal parts of 800 arc-minutes each. The 27 Yogas from Vishkambha to Vaidhriti range from auspicious (Siddhi, Shubha) to inauspicious (Vishkambha, Vyatipata). Essential for muhurta calculations.</div></div>
+  </div>
+
+  <div class="about-section" style="background:radial-gradient(ellipse at 0% 0%,rgba(255,199,0,0.08) 0%,#0c0e20 70%);border:1px solid rgba(255,199,0,0.18)">
+    <div class="about-icon" style="background:rgba(255,199,0,0.12);border:1.5px solid rgba(255,199,0,0.28)">🔢</div>
+    <div><div class="about-title" style="color:#ffc700">Vedic Mathematics &amp; Astronomy</div>
+    <div class="about-text">The Sulba Sutras (~800–200 BCE) state the Pythagorean theorem. Aryabhata (~499 CE) calculated π to 3.14159 and the sidereal year to within 3 minutes. Brahmagupta (628 CE) established arithmetic with zero. The Kerala school (14th–16th century) developed infinite series predating Newton and Leibniz.</div></div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-title">Timeline of Ancient Indian Knowledge</div>
+    <div class="tl-row"><div class="tl-year" style="color:#f47400">~800 BCE</div><div class="tl-dot" style="background:#f47400;box-shadow:0 0 6px #f47400"></div><div class="tl-text">Sulba Sutras — geometry and Pythagorean theorem</div></div>
+    <div class="tl-row"><div class="tl-year" style="color:#ffc700">~300 BCE</div><div class="tl-dot" style="background:#ffc700;box-shadow:0 0 6px #ffc700"></div><div class="tl-text">Pingala — Chandahshastra, binary system and combinatorics</div></div>
+    <div class="tl-row"><div class="tl-year" style="color:#9b5de5">~150 BCE</div><div class="tl-dot" style="background:#9b5de5;box-shadow:0 0 6px #9b5de5"></div><div class="tl-text">Vedanga Jyotisha — earliest formal astronomy text</div></div>
+    <div class="tl-row"><div class="tl-year" style="color:#e03e3e">~499 CE</div><div class="tl-dot" style="background:#e03e3e;box-shadow:0 0 6px #e03e3e"></div><div class="tl-text">Aryabhata — heliocentric model, π calculation, sidereal year</div></div>
+    <div class="tl-row"><div class="tl-year" style="color:#00b4d8">~628 CE</div><div class="tl-dot" style="background:#00b4d8;box-shadow:0 0 6px #00b4d8"></div><div class="tl-text">Brahmagupta — arithmetic rules for zero and negative numbers</div></div>
+    <div class="tl-row"><div class="tl-year" style="color:#f47400">~830 CE</div><div class="tl-dot" style="background:#f47400;box-shadow:0 0 6px #f47400"></div><div class="tl-text">Mahavira — extensive work on fractions and algebra</div></div>
+    <div class="tl-row"><div class="tl-year" style="color:#ffc700">~1150 CE</div><div class="tl-dot" style="background:#ffc700;box-shadow:0 0 6px #ffc700"></div><div class="tl-text">Bhaskara II — calculus concepts and astronomy</div></div>
+    <div class="tl-row" style="margin-bottom:0"><div class="tl-year" style="color:#9b5de5">~1400 CE</div><div class="tl-dot" style="background:#9b5de5;box-shadow:0 0 6px #9b5de5"></div><div class="tl-text">Kerala School — infinite series for π and trigonometry</div></div>
+  </div>
+</div>
+
+</main>
+
+<div class="top-bar"></div>
+<footer>
+  <div class="footer-name">AryaVidya</div>
+  <div class="footer-sub">Pingala's Chandahshastra (~300 BCE) · Vedic Panchanga System</div>
+</footer>
+
+<script>
+const TITHI_NAMES=["Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shashthi","Saptami","Ashtami","Navami","Dashami","Ekadashi","Dwadashi","Trayodashi","Chaturdashi","Purnima","Pratipada","Dwitiya","Tritiya","Chaturthi","Panchami","Shashthi","Saptami","Ashtami","Navami","Dashami","Ekadashi","Dwadashi","Trayodashi","Chaturdashi","Amavasya"];
+const KARANA_REP=["Bava","Balava","Kaulava","Taitila","Gara","Vanija","Vishti"];
+const NAKSATRA_NAMES=["Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha","Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishtha","Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"];
+const YOGA_NAMES=["Vishkambha","Priti","Ayushman","Saubhagya","Shobhana","Atiganda","Sukarman","Dhriti","Shula","Ganda","Vriddhi","Dhruva","Vyaghata","Harshana","Vajra","Siddhi","Vyatipata","Variyan","Parigha","Shiva","Siddha","Sadhya","Shubha","Shukla","Brahma","Indra","Vaidhriti"];
+function getKaranaName(k){if(k===1)return"Kimstughna";if(k===58)return"Shakuni";if(k===59)return"Chatushpada";if(k===60)return"Naga";return KARANA_REP[(k-2)%7];}
+
+const banners={binary:{icon:"📿",title:"Chandahshastra — Binary System",desc:"Pingala's ancient binary encoding from ~300 BCE India"},calendar:{icon:"🌙",title:"Panchanga — Calendar System",desc:"Compute Tithi, Karana, Naksatra & Yoga from celestial longitudes"},about:{icon:"✦",title:"About — Indian Knowledge System",desc:"The history and meaning behind Pingala's binary and the Vedic Panchanga"}};
+function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');document.getElementById('nav-'+name).classList.add('active');const b=banners[name];document.getElementById('banner-icon').textContent=b.icon;document.getElementById('banner-title').textContent=b.title;document.getElementById('banner-desc').textContent=b.desc;}
+function switchBinaryTab(tab,btn){document.querySelectorAll('#binary-tabs .tab-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('#page-binary .tab-panel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById('binary-'+tab).classList.add('active');}
+function switchCalTab(tab,btn){document.querySelectorAll('#calendar-tabs .tab-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('#page-calendar .tab-panel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById('calendar-'+tab).classList.add('active');}
+
+function parseSeq(raw){const nums=raw.trim().split(/[\s,]+/).map(Number);return nums.some(n=>isNaN(n)||(n!==0&&n!==1))?null:nums;}
+function bitsHtml(arr){return'<div class="bits">'+arr.map(b=>`<div class="bit ${b===1?'one':'zero'}">${b}</div>`).join('')+'</div>';}
+function resultBox(label,content){return`<div class="result-box"><div class="result-box-label">${label}</div>${content}</div>`;}
+function decimalBox(label,value){return`<div class="decimal-result"><div class="decimal-label">${label}</div><div class="decimal-value">${value}</div></div>`;}
+function calCard(cls,label,num,name,elapsed,extra){return`<div class="cal-card ${cls}"><div class="cal-card-label">${label}</div><div class="cal-card-num">${num}</div><div class="cal-card-name">${name}</div><div class="cal-card-elapsed">${elapsed} elapsed</div><div class="cal-card-sub">⏱ ${extra}</div></div>`;}
+function getInputs(p){return{moonDeg:+document.getElementById(p+'-moon-deg').value||0,moonMin:+document.getElementById(p+'-moon-min').value||0,sunDeg:+document.getElementById(p+'-sun-deg').value||0,sunMin:+document.getElementById(p+'-sun-min').value||0};}
+function calcDegMin(i){return{deg1:i.moonDeg+i.moonMin/60,min1:i.moonDeg*60+i.moonMin,deg2:i.sunDeg+i.sunMin/60,min2:i.sunDeg*60+i.sunMin};}
+
+function computeNasta(){const n=parseInt(document.getElementById('nasta-num').value);const len=parseInt(document.getElementById('nasta-len').value);const err=document.getElementById('nasta-error');err.style.display='none';if(!n||n<1){err.textContent='Enter a positive integer.';err.style.display='block';return;}if(!len||len<1||len>30){err.textContent='Length must be 1–30.';err.style.display='block';return;}let num=n;const binary=[];for(let i=0;i<len;i++){if(num%2===0){binary.push(1);num=Math.floor(num/2);}else{binary.push(0);num=Math.floor((num+1)/2);}}const rev=[...binary].reverse();document.getElementById('nasta-result').innerHTML=`<hr class="gold-rule"><div class="result">${resultBox('Pingala Sequence (ancient)',bitsHtml(binary))}${resultBox('Modern Binary Sequence',bitsHtml(rev))}<p style="font-size:14px;color:var(--text-muted);margin-top:8px">Number <strong style="color:var(--text-dim)">${n}</strong> in <strong style="color:var(--text-dim)">${len}</strong> positions</p></div>`;}
+function computeUddhista(){const err=document.getElementById('uddhista-error');err.style.display='none';const seq=parseSeq(document.getElementById('uddhista-seq').value);if(!seq){err.textContent='Enter only 0s and 1s separated by spaces or commas.';err.style.display='block';return;}const rev=[...seq].reverse();let result=0;for(let i=0;i<rev.length;i++)result=result*2+rev[i];result+=1;document.getElementById('uddhista-result').innerHTML=`<hr class="gold-rule"><div class="result">${resultBox('Entered Sequence',bitsHtml(seq))}${decimalBox('Decimal Result',result)}</div>`;}
+function computeDeci(){const err=document.getElementById('deci-error');err.style.display='none';const seq=parseSeq(document.getElementById('deci-seq').value);if(!seq){err.textContent='Enter only 0s and 1s separated by spaces or commas.';err.style.display='block';return;}document.getElementById('deci-result').innerHTML=`<hr class="gold-rule"><div class="result">${resultBox('Binary Input',bitsHtml(seq))}${decimalBox('Decimal Result',parseInt(seq.join(''),2))}</div>`;}
+
+function calTithi(inp){const{deg1,deg2}=calcDegMin(inp);const t=deg2>deg1?Math.floor((360+deg1-deg2)/12):Math.floor((deg1-deg2)/12);const hrs=parseFloat(((708*(t+1))/ **...**
